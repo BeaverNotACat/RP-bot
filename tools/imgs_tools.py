@@ -7,6 +7,3 @@ def make_health_condition_pic(head, body, arm_l, arm_r, leg_l, leg_r):
     add_text(image, )
     image.save('/images/health_condition.png')
     pass
-
-def simple_def(nothing=""):
-    return "function is working"

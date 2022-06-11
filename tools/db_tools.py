@@ -4,12 +4,12 @@ from tools.erors import InfluenceMoney
 
 # Функции что то возвращающие
 ######################################################################
-def find_char_id(character_name, user):
-    print(f"Finding {user}'s {character_name} id")
+def find_char_id(character_name):
+    print(f"Finding {character_name} id")
 
     connection = db_connect('database/roleplay.db')
 
-    form = f'SELECT id FROM characters WHERE name = "{character_name}" AND user_id = "{user}";'
+    form = f'SELECT id FROM characters WHERE name = "{character_name}";'
     character_id = execute_read_query(connection, form)[0][0]
     connection.close()
 
@@ -65,7 +65,7 @@ def cause_damage(target_character_id, body_part, damage):
 
     connection = db_connect('database/roleplay.db')
 
-    part_select_form = f'SELECT hp FROM health WHERE char_id = "{target_character_id} AND type = {body_part}";'
+    part_select_form = f'SELECT hp FROM health WHERE char_id = "{target_character_id}" AND type = "{body_part}";'
 
     new_hp = execute_read_query(connection, part_select_form)[0][0] - damage
     cause_damage_form = f'UPDATE health SET hp = {new_hp} FROM health WHERE char_id = "{target_character_id} AND type = {body_part}";'

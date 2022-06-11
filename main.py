@@ -5,16 +5,18 @@ import random
 
 from settings import config
 
-from tools.imgs_tools import make_health_condition_pic, simple_def
 # Самописные функции для работы с бд
 from tools.db_tools import stat_read, cause_damage, money_transaction, health_condition_read, part_hp_read, create_aliases, find_char_id
 # Заготовки под вывод сообщений
 from tools.discord_tools import form_health_condition_emmed, form_health_changes_emmed, form_roll_result_emmed, form_money_transfer_emmed, form_error_emmed
-from tools.erors import ownership_error, influence_money, stat_error
+# Создании изображений для сообщений
+from tools.imgs_tools import make_health_condition_pic
+# Проверка ввода пользователей на ошибки
+from tools.erors import name_error, ownership_error, stat_error, part_name_error, influence_money, negative_heal
 
 bot = commands.Bot(command_prefix=config['prefix'])
-print(health_condition_read(1))
 #################################################################################
+print(config['token'])
 
 
 @bot.command()
@@ -39,7 +41,7 @@ async def transfer(ctx, character_name=str(), amount=int(), target_name=str()):
 
     if ownership_error(character_name, ctx.author.id):
         embed = form_error_emmed('Вы не владете персонажем с таким именем')
-    elif influence_money(find_char_id(character_name, ctx.author.id), amount):
+    elif influence_money(find_char_id(character_name), amount):
         embed = form_error_emmed(
             'Недостаточно средств для совершения операции')
     else:
@@ -61,26 +63,33 @@ async def health(ctx, character_name=str()):
 
     await ctx.reply(embed=embed)
 
-# @bot.command()
-# async def treat(ctx, target='', part='', amount=0):
 
-#     if name_error(target, part, 'health'):
-#         embed = form_error_emmed('Неправильно введено имя персонажа/часть тела')
-#     else:
-#         old_hp = part_hp_read(target, part)
-#         cause_damage(target, part, -amount)
-#         new_hp = part_hp_read(target, part)
+@bot.command()
+async def treat(ctx, target_name=str(), target_body_part=str(), amount=int()):
 
-#         embed = form_health_changes_emmed(old_hp, new_hp, part)
+    if name_error(target_name):
+        embed = form_error_emmed('Персонажа с таким именем не существует')
+    # elif negative_heal(amount):
+    #     embed = form_error_emmed('Нельзя лечить на отрицательные значения')
+    elif part_name_error(find_char_id(target_name), target_body_part):
+        embed = form_error_emmed('Части тела с таким именем не существует')
+    else:
+        old_hp = part_hp_read(find_char_id(target_name), target_body_part)
 
-#     await ctx.reply(embed = embed)
+        cause_damage(find_char_id(target_name), target_body_part, -amount)
+
+        new_hp = part_hp_read(find_char_id(target_name), target_body_part)
+
+        embed = form_health_changes_emmed(old_hp, new_hp, target_body_part)
+
+    await ctx.reply(embed=embed)
 
 ##################################################################################
 
 
-@bot.command()  # Не удалять
+@ bot.command()  # Не удалять
 async def pat(ctx):
-    await ctx.reply('UwU' + simple_def())
+    await ctx.reply('UwU')
 
 # @bot.command()   #Тестовая функция для нанесения урона, потом удалю
 # async def bite(ctx, character='', target='', part='торс'):
