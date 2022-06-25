@@ -49,11 +49,25 @@ def part_hp_read(character_id, body_part):
 
     connection = db_connect('database/roleplay.db')
 
-    hp_form = f'SELECT hp FROM health WHERE char_id = "{character_id}" AND type = "{body_part}";'
+    hp_form = f'SELECT hp FROM health WHERE char_id = {character_id} AND type = "{body_part}";'
 
     hp = execute_read_query(connection, hp_form)[0][0]
     connection.close()
     return hp
+
+
+def max_hp_read(character_id, body_part):
+    print(f'Reading hp of {body_part} with charracter id {character_id}:')
+
+    connection = db_connect('database/roleplay.db')
+
+    max_hp_form = f'SELECT max_hp FROM health WHERE char_id = {character_id} AND type = "{body_part}";'
+
+    max_hp = execute_read_query(connection, max_hp_form)[0][0]
+    connection.close()
+
+    return max_hp
+
 
 # Остальные
 ######################################################################
@@ -65,10 +79,10 @@ def cause_damage(target_character_id, body_part, damage):
 
     connection = db_connect('database/roleplay.db')
 
-    part_select_form = f'SELECT hp FROM health WHERE char_id = "{target_character_id}" AND type = "{body_part}";'
+    part_select_form = f'SELECT hp FROM health WHERE char_id = {target_character_id} AND type = "{body_part}";'
 
     new_hp = execute_read_query(connection, part_select_form)[0][0] - damage
-    cause_damage_form = f'UPDATE health SET hp = {new_hp} FROM health WHERE char_id = "{target_character_id} AND type = {body_part}";'
+    cause_damage_form = f'UPDATE health SET hp = {new_hp} WHERE char_id = {target_character_id} AND type = "{body_part}";'
     execute_query(connection,  cause_damage_form)
 
     connection.close()

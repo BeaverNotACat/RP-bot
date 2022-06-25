@@ -39,11 +39,12 @@ CREATE TABLE IF NOT EXISTS etcetera (
     biografy TEXT NOT NULL,
     traits TEXT NOT NULL,
     weaknesses TEXT NOT NULL,
+    low_sp_actions TEXT NOT NULL,
     contacts TEXT NOT NULL,
     FOREIGN KEY (char_id) REFERENCES character (id)
 );"""
 
-create_characters="""
+create_characters = """
 INSERT INTO
   characters (name,  user_id, level, wallet)
 VALUES
@@ -53,7 +54,7 @@ VALUES
     ('Лиза', '695457412097769472', 1, 100);
 """
 
-create_stats="""
+create_stats = """
 INSERT INTO
   stats (char_id, мужество,  мудрость, выдержка, справделивость)
 VALUES
@@ -61,8 +62,8 @@ VALUES
     ('2', '20', '20', '20', '20'),
     ('3', '14', '14', '15', '15'),
     ('4', '10', '15', '17', '12');
-"""   
-create_health="""
+"""
+create_health = """
 INSERT INTO
   health (char_id, type, hp, max_hp, description)
 VALUES
@@ -94,21 +95,21 @@ VALUES
     ('4','нога(л)', 10, 10, 'none'),
     ('4','нога(п)', 10, 10, 'none'),
     ('4','sp', 10, 10, 'none');
-"""   
-create_augmentations=""" 
+"""
+create_augmentations = """ 
 INSERT INTO
   augmentations (id, голова, рука_л, рука_п, торс, нога_л, нога_п)
 VALUES
     ('Маргарита','Нет', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет'),
     ('Рейсу', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет', 'Нет');
-""" 
+"""
 
 
 connection = db_connect('database/roleplay.db')
-execute_query(connection,  create_characters_table)  
+execute_query(connection,  create_characters_table)
 execute_query(connection,  create_stats_table)
-execute_query(connection,  create_health_table)  
-execute_query(connection,  create_etc_table)    
+execute_query(connection,  create_health_table)
+execute_query(connection,  create_etc_table)
 
 execute_query(connection,  create_characters)
 execute_query(connection,  create_stats)
