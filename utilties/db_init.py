@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS characters (
 """
 create_stats_table = """
 CREATE TABLE IF NOT EXISTS stats (
-  character_id INTEGER PRIMARY KEY, 
+  char_id INTEGER PRIMARY KEY, 
   fortitude INTEGER NOT NULL,
   prudence INTEGER NOT NULL,
   temperance INTEGER NOT NULL,
@@ -107,13 +107,11 @@ VALUES
 
 connection = sqlite3.connect('./roleplay.db')
 cursor = connection.cursor()
-cursor.execute(create_characters_table)
 
+for i in [create_characters_table, create_stats_table, create_health_table, create_etc_table, create_inventory_table]:
+    cursor.execute(i)
+    connection.commit()
 
-cursor.execute(create_stats_table)
-cursor.execute(create_health_table)
-cursor.execute(create_etc_table)
-cursor.execute(create_inventory_table)
 
 # cursor.execute(create_characters)
 # cursor.execute(create_stats)
