@@ -40,7 +40,7 @@ class Dice(commands.Cog):
 
     @app_commands.command(
         name='dice',
-        description='Rolls your character`s dice to get action result')
+        description='Бросок кубика персонажа, для получения результата действия')
     @app_commands.describe(
         dice='Колличетсво граней кубика',
         stat='Характеристики вашего персонажа',
