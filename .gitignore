@@ -2,3 +2,4 @@ token
 **/__pycache__/
 env
 temp/**
+roleplay.db
