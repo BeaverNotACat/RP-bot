@@ -16,8 +16,6 @@ class Client(DiscordClient):
         if not self.synced:
             await self.tree.sync()
             self.synced = True
-        print(
-            f'Logged as: {self.user} | discord.py {discord.__version__}')
 
     async def setup_hook(self):
         self.__database = DatabaseInterface('roleplay.db')
@@ -26,7 +24,7 @@ class Client(DiscordClient):
             if f.endswith(".py"):
                 await self.load_extension("cogs." + f[:-3])
 
-    def get_database(self):
+    def get_database(self) -> DatabaseInterface:
         return self.__database
 
 
