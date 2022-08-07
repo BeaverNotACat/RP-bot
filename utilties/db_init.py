@@ -53,17 +53,17 @@ CREATE TABLE IF NOT EXISTS etcetera (
 
 create_characters = """
 INSERT INTO
-  characters (name,  user_id, level, wallet)
+  characters (name, type, user_id)
 VALUES
-    ('Маргарита', '354177140087980042', 1, 100),
-    ('Константин','946181563266244648', 1, 100),
-    ('Рейсу', '392698208985284611', 1, 100),
-    ('Лиза', '695457412097769472', 1, 100);
+    ('Маргарита', 'human', '354177140087980042'),
+    ('Константин', 'abnormally','946181563266244648'),
+    ('Рейсу', 'human', '392698208985284611'),
+    ('Лиза', 'human', '695457412097769472');
 """
 
 create_stats = """
 INSERT INTO
-  stats (char_id, мужество,  мудрость, выдержка, справделивость)
+  stats (char_id, prudence,  fortitude, temperance, justice)
 VALUES
     ('1','15', '17', '16', '12'),
     ('2', '20', '20', '20', '20'),
@@ -112,8 +112,10 @@ for i in [create_characters_table, create_stats_table, create_health_table, crea
     cursor.execute(i)
     connection.commit()
 
+for i in [create_characters, create_stats]:
+    cursor.execute(i)
+    connection.commit()
 
 # cursor.execute(create_characters)
 # cursor.execute(create_stats)
 # cursor.execute(create_health)
-connection.commit()
