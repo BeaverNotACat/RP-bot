@@ -1,3 +1,4 @@
+from stringprep import in_table_c12
 import discord
 from discord import app_commands
 from discord.app_commands import Choice
@@ -7,16 +8,16 @@ import random
 
 
 class Dice(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot) -> None:
         self.bot = bot
         self.database = self.bot.get_database()
 
-    def __gain_dice_vaue(self, dice, stat, character_name, mod) -> int:
+    def __gain_dice_vaue(self, dice: int, stat: str, character_name: str, mod: int) -> int:
         return random.randint(0, dice) + (self.database.read_stat(
             stat=stat, character_id=self.database.find_char_id(character_name=character_name.title())[0][0])[0][0]-10)//2+mod
 
     @staticmethod
-    def __gain_embed(dice_value) -> discord.Embed:
+    def __gain_embed(dice_value: int) -> discord.Embed:
         if dice_value >= 20:
             emmed_color = 0x15D200
             emmed_name = 'Критический успех!'

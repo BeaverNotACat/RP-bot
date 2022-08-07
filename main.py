@@ -6,18 +6,18 @@ from classes.database import DatabaseInterface
 
 
 class Client(DiscordClient):
-    def __init__(self):
-        self.synced = False
+    def __init__(self) -> None:
+        self.__synced = False
         super().__init__(
             command_prefix='$',
             intents=discord.Intents.all(),)
 
-    async def on_ready(self):
-        if not self.synced:
+    async def on_ready(self) -> None:
+        if not self.__synced:
             await self.tree.sync()
-            self.synced = True
+            self.__synced = True
 
-    async def setup_hook(self):
+    async def setup_hook(self) -> None:
         self.__database = DatabaseInterface('roleplay.db')
 
         for f in os.listdir("./cogs"):
