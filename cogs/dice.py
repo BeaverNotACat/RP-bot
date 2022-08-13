@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.app_commands import Choice
 from discord.ext import commands
 
+
 import random
 
 
@@ -10,6 +11,7 @@ class Dice(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         self.database = self.bot.get_database()
+        self.checkouts = self.bot.get_checkouts()
 
     def __gain_dice_vaue(self, dice: int, stat: str, character_name: str, mod: int) -> int:
         return random.randint(0, dice) + (self.database.read_stat(
@@ -52,6 +54,7 @@ class Dice(commands.Cog):
         Choice(name='выдержка', value='temperance'),
         Choice(name='справедливость', value='justice')])
     async def dice(self, interaction: discord.Interaction, stat: str, character_name: str, mod: int = 0, dice: int = 20) -> None:
+        self.check_admin_rights(interaction=interaction)
 
         dice_value = self.__gain_dice_vaue(dice, stat, character_name, mod)
 
