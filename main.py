@@ -3,6 +3,7 @@ import os
 
 from classes.discordclient import DiscordClient
 from classes.database import DatabaseInterface
+from classes.checkouts import Checkouts
 
 
 class Client(DiscordClient):
@@ -19,6 +20,7 @@ class Client(DiscordClient):
 
     async def setup_hook(self) -> None:
         self.__database = DatabaseInterface('roleplay.db')
+        self.__checkouts = Checkouts()
 
         for f in os.listdir("./cogs"):
             if f.endswith(".py"):
@@ -26,6 +28,9 @@ class Client(DiscordClient):
 
     def get_database(self) -> DatabaseInterface:
         return self.__database
+
+    def get_checkouts(self) -> Checkouts:
+        return self.__checkouts
 
 
 if __name__ == '__main__':
