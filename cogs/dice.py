@@ -45,12 +45,12 @@ class Dice(commands.Cog):
         dice='Колличетсво граней кубика',
         stat='Характеристики вашего персонажа',
         character_name='Имя вашего персонажа',
-        mod='Опционально! Модификатор броска')
+        mod='Модификатор броска')
     @app_commands.choices(stat=[
-        Choice(name='мужество', value='fortitude'),
-        Choice(name='мудрость', value='prudence'),
-        Choice(name='выдержка', value='temperance'),
-        Choice(name='справедливость', value='justice')])
+        Choice(name='Мужество', value='fortitude'),
+        Choice(name='Мудрость', value='prudence'),
+        Choice(name='Выдержка', value='temperance'),
+        Choice(name='Справедливость', value='justice')])
     async def dice(self, interaction: discord.Interaction, stat: str, character_name: str, mod: int = 0, dice: int = 20) -> None:
 
         dice_value = self.__gain_dice_vaue(dice, stat, character_name, mod)
