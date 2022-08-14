@@ -12,6 +12,13 @@ class Treat(commands.Cog):
         self.database = self.bot.get_database()
         self.checkouts = self.bot.get_checkouts()
 
+    @staticmethod
+    def __get_parts_list(part):
+        if part == 'all':
+            return ['head', 'body', 'arm_r', 'arm_l', 'leg_r', 'leg_l']
+        else:
+            return [part]
+
     @app_commands.command(
         name='treat',
         description='Лечение персонажа')
@@ -28,18 +35,12 @@ class Treat(commands.Cog):
         Choice(name='Правая нога', value='leg_r'),
         Choice(name='Левая_нога', value='leg_l')
     ])
-    @staticmethod
-    def __get_parts_list(part):
-        if part == 'all':
-            return ['head', 'body', 'arm_r', 'arm_l', 'leg_r', 'leg_l']
-        else:
-            return [part]
-
-    async def dice(self, interaction: discord.Interaction, character_name: str, part: str, value: int) -> None:
+    async def treat(self, interaction: discord.Interaction, character_name: str, part: str, value: int) -> None:
         self.checkouts.check_admin_rights(interaction)
 
         for part in self.__get_parts_list(part):
-            self.database.cause_damage(body_part=part, damage=-value, self.database.find_char_id(character_name=character_name))
+            self.database.cause_damage(
+                body_part=part, damage=-value, target_character_id=self.database.find_char_id(character_name=character_name))
         await interaction.response.send_message(1)
 
 
