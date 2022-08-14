@@ -1,5 +1,5 @@
 import discord
-from database import DatabaseInterface
+from classes.database import DatabaseInterface
 
 
 class Checkouts:

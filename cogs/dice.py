@@ -52,7 +52,6 @@ class Dice(commands.Cog):
         Choice(name='выдержка', value='temperance'),
         Choice(name='справедливость', value='justice')])
     async def dice(self, interaction: discord.Interaction, stat: str, character_name: str, mod: int = 0, dice: int = 20) -> None:
-        self.checkouts.check_admin_rights(interaction=interaction)
 
         dice_value = self.__gain_dice_vaue(dice, stat, character_name, mod)
 
