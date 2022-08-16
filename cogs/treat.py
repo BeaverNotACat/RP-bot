@@ -13,9 +13,10 @@ class Treat(commands.Cog):
         self.checkouts = self.bot.get_checkouts()
 
     @staticmethod
-    def __gain_embed():
-        embed = discord.Embed(color=0xFFFFFF, title='Бросок кубика:')
-        embed.add_field(name='Пероснаж вылечен', value=f'')
+    def __gain_embed(part: list):
+        embed = discord.Embed(color=0xFFFFFF, title='Лечение персонажа:')
+        embed.add_field(name='Текущее здоровье персонажа:',
+                        value=f'сюда выводить картинку с хепешкой')
 
         return embed
 
@@ -27,8 +28,8 @@ class Treat(commands.Cog):
             return [part]
 
     def __scale_heal_amount(self, character_id: int, part: str, heal_amount: int) -> int:
-        max_hp = self.database.read_part_max_hp(part, character_id)
-        current_hp = self.database.read_part_hp(part, character_id)
+        max_hp = self.database.read_part_max_hp(part, character_id)[0][0]
+        current_hp = self.database.read_part_hp(part, character_id)[0][0]
 
         if max_hp < current_hp + heal_amount:
             return max_hp - current_hp
@@ -55,15 +56,15 @@ class Treat(commands.Cog):
         await self.checkouts.check_admin_rights(interaction)
 
         character_id = self.database.find_char_id(
-            character_name=character_name)
+            character_name=character_name.title())[0][0]
 
         for part in self.__get_parts_list(part):
 
-            await self.database.cause_damage(
+            self.database.cause_damage(
                 body_part=part, damage=-self.__scale_heal_amount(
                     character_id=character_id, part=part, heal_amount=heal_amount), target_character_id=character_id)
 
-        await interaction.response.send_message(embed=self.__gain_embed())
+        await interaction.response.send_message(embed=self.__gain_embed(part=part))
 
 
 async def setup(bot):
