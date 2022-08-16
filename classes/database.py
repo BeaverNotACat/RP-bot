@@ -28,13 +28,18 @@ class DatabaseInterface:
         return self.__read(f'SELECT max_hp FROM health WHERE char_id = {character_id} AND type = "{body_part}";')
 
     def cause_damage(self,  body_part: str, damage: int, target_character_id: int) -> None:
-        return self.__execute(f'UPDATE health SET hp = {self.read_part_hp(target_character_id, body_part)-damage} WHERE char_id = {target_character_id} AND type = "{body_part}";')
+        return self.__execute(f'UPDATE health SET hp = {self.read_part_hp(character_id=target_character_id,body_part=body_part)[0][0]-damage} WHERE char_id = {target_character_id} AND type = "{body_part}";')
 
     def read_money_amount(self, character_id) -> int:
         return self.__read(f'SELECT amount FROM inventory WHERE name = "ankh" AND char_id = "{character_id}";')
 
     def spend_money(self, amount: int, character_id: int) -> None:
-        return self.__execute(f'UPDATE inventory SET amount = "{self.read_money_amount(character_id)-amount}" WHERE name = "ankh" AND char_id = "{character_id}";')
+        return self.__execute(f'UPDATE inventory SET amount = "{self.read_money_amount(character_id)[0][0]-amount}" WHERE name = "ankh" AND char_id = "{character_id}";')
 
     def __del__(self):
         self.__connection.close()
+
+
+# db = DatabaseInterface('./roleplay.db')
+# print(db.read_part_hp('head', 1))
+# print(db.read_part_max_hp('head', 1))
