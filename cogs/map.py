@@ -3,6 +3,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
+
 class Map(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
@@ -16,14 +17,14 @@ class Map(commands.Cog):
 
         return embed, file
 
-    @app_commands.command(name = 'map', description = 'Вывод карты района')
+    @app_commands.command(name='map', description='Вывод карты района')
     async def map(self, interaction: discord.Interaction) -> None:
         embed_and_file = self.__gain_embed()
         embed = embed_and_file[0]
         file = embed_and_file[1]
         await interaction.response.defer()
-        await asyncio.sleep(5)
         await interaction.followup.send(embed=embed, file=file)
+
 
 async def setup(bot):
     await bot.add_cog(Map(bot))
