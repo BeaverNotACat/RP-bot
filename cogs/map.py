@@ -20,7 +20,8 @@ class Map(commands.Cog):
         embed_and_file = self.__gain_embed()
         embed = embed_and_file[0]
         file = embed_and_file[1]
-        await interaction.response.interaction.followup.send(embed=embed, file=file)
+        await interaction.response.defer()
+        await interaction.followup.send(embed=embed, file=file)
 
 async def setup(bot):
     await bot.add_cog(Map(bot))
