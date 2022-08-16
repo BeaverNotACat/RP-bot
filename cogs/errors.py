@@ -30,6 +30,7 @@ class CommandErrorHandler(commands.Cog):
     @commands.Cog.listener("on_app_command_error")
     async def get_app_command_error(self, interaction: discord.Interaction, error: discord.app_commands.AppCommandError):
         await self.__respond_to_interaction(interaction, error=error)
+        raise error
 
 
 async def setup(bot):
