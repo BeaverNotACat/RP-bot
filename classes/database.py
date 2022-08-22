@@ -27,6 +27,13 @@ class DatabaseInterface:
     def read_part_max_hp(self, body_part: str, character_id: int) -> int:
         return self.__read(f'SELECT max_hp FROM health WHERE char_id = {character_id} AND type = "{body_part}";')
 
+    def read_all_part_conditon(self, charactr_id):
+        condition = []
+        for part in ['head', 'body', 'arm_r', 'arm_l', 'leg_r', 'leg_l']:
+            condition.append([self.read_part_hp(body_part=part, character_id=charactr_id)[0][0],
+                             self.read_part_max_hp(body_part=part, character_id=charactr_id)[0][0]])
+        return condition
+
     def cause_damage(self,  body_part: str, damage: int, target_character_id: int) -> None:
         return self.__execute(f'UPDATE health SET hp = {self.read_part_hp(character_id=target_character_id,body_part=body_part)[0][0]-damage} WHERE char_id = {target_character_id} AND type = "{body_part}";')
 
