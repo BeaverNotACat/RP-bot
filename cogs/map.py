@@ -19,9 +19,7 @@ class Map(commands.Cog):
 
     @app_commands.command(name='map', description='Вывод карты района')
     async def map(self, interaction: discord.Interaction) -> None:
-        embed_and_file = self.__gain_embed()
-        embed = embed_and_file[0]
-        file = embed_and_file[1]
+        embed, file = self.__gain_embed()
         await interaction.response.defer()
         await interaction.followup.send(embed=embed, file=file)
 

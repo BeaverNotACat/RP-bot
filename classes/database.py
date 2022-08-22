@@ -1,3 +1,4 @@
+from shelve import DbfilenameShelf
 import sqlite3
 
 
@@ -29,7 +30,7 @@ class DatabaseInterface:
 
     def read_all_part_conditon(self, charactr_id):
         condition = []
-        for part in ['head', 'body', 'arm_r', 'arm_l', 'leg_r', 'leg_l']:
+        for part in ['head', 'body', 'arm_r', 'arm_l', 'leg_r', 'leg_l', 'sp']:
             condition.append([self.read_part_hp(body_part=part, character_id=charactr_id)[0][0],
                              self.read_part_max_hp(body_part=part, character_id=charactr_id)[0][0]])
         return condition
@@ -47,6 +48,5 @@ class DatabaseInterface:
         self.__connection.close()
 
 
-# db = DatabaseInterface('./roleplay.db')
-# print(db.read_part_hp('head', 1))
-# print(db.read_part_max_hp('head', 1))
+db = DatabaseInterface('./roleplay.db')
+print(db.read_all_part_conditon(db.find_char_id('Маргарита')[0][0]))
