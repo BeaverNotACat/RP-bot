@@ -45,14 +45,13 @@ class Images:
                         [l_leg_hp[0], l_leg_hp[1], (223, 266), (227, 268)],
                         [r_leg_hp[0], r_leg_hp[1], (48, 264), (52, 266)]]:
 
-            self.body.paste(self.__check_health(part_hp[0] / part_hp[1]))
-
+            self.body.paste(self.__check_health(part_hp[0] / part_hp[1]), part_hp[2], self.__check_health(part_hp[0] / part_hp[1]))
             self.text.text(part_hp[3], str(part_hp[0]), font=self.font, fill=(
                 '#FFFFFF'), stroke_width=2, stroke_fill=('#000000'))
 
         part_sp = [sp[0], sp[1], (42, 69), (46, 71)]
 
-        self.body.paste(self.__check_mental_health(part_hp[0] / part_hp[1]))
+        self.body.paste(self.__check_mental_health(part_hp[0] / part_hp[1]), part_sp[2], self.__check_mental_health(part_hp[0] / part_hp[1]))
 
         self.text.text(part_sp[3], str(part_sp[0]), font=self.font, fill=(
             '#FFFFFF'), stroke_width=2, stroke_fill=('#000000'))
