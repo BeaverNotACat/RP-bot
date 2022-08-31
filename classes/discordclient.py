@@ -3,6 +3,7 @@ from typing import Any
 
 from classes.database import DatabaseInterface
 from classes.checkouts import Checkouts
+from classes.images import Images
 
 
 class DiscordClient(commands.Bot):
@@ -12,6 +13,9 @@ class DiscordClient(commands.Bot):
         pass
 
     def get_checkouts() -> Checkouts:
+        pass
+
+    def get_images() -> Images:
         pass
 
     def __init__(self, **kwargs: Any) -> None:
