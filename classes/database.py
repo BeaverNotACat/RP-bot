@@ -46,7 +46,3 @@ class DatabaseInterface:
 
     def __del__(self):
         self.__connection.close()
-
-
-db = DatabaseInterface('./roleplay.db')
-print(db.read_all_part_conditon(db.find_char_id('Маргарита')[0][0]))
