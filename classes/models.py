@@ -44,27 +44,34 @@ class Character(Base):
 
 class Skill(Base):
 	__tablename__ = 'skills'
+
 	id = Column(Integer, primary_key=True)
 	name = Column(String(100))
 	description = Column(String)
-	profile_id = Column(ForeignKey(Character))
+	character = Column(Integer, ForeignKey("characters.id"))
 
-	extra_info = relationship('ExtraInfo', back_populates="skills")
+	# extra_info = relationship('Character', back_populates="skills")
 
 
 class Trait(Base):
+	__tablename__ = 'traits'
+
 	id = Column(Integer, primary_key=True)
 	text = Column(String(50))
 	character = Column(Integer, ForeignKey("characters.id"))
 
 
 class Weakness(Base):
+	__tablename__ = 'weaknesses'
+
 	id = Column(Integer, primary_key=True)
 	text = Column(String(50))
 	character = Column(Integer, ForeignKey("characters.id"))
 
 
 class BodyPart(Base):
+	__tablename__ = 'body_parts'
+
 	id = Column(Integer, primary_key=True)
 	type = Column(String(50))
 	hp = Column(Integer)
@@ -73,6 +80,8 @@ class BodyPart(Base):
 
 
 class Item(Base):
+	__tablename__ = 'items'
+
 	id = Column(Integer, primary_key=True)
 	type = Column(String(50))
 	amount = Column(Integer)
@@ -82,6 +91,8 @@ class Item(Base):
 
 
 class Stats(Base):
+	__tablename__ = 'stats'
+
 	character = Column(Integer, ForeignKey("characters.id"), primary_key=True)
 	fortitude = Column(Integer)
 	temperance = Column(Integer)
