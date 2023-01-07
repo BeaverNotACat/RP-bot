@@ -32,11 +32,13 @@ class Character(Base):
 	user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
 	user = relationship(User, back_populates="characters")
+	stats = relationship('Stats', back_populates="character")
 	skills = relationship('Skill', back_populates="character")
 	traits = relationship('Trait', back_populates="character")
 	weaknesses = relationship('Weakness', back_populates="character")
 	body_parts = relationship('BodyPart', back_populates="character")
 	items = relationship('Item', back_populates="character")
+	extra_info = relationship('ExtraInfo', back_populates="character")
 
 	def __repr__(self):
 		return f"Character(id={self.id}, name={self.user}, type={self.type}, user={self.user})"
@@ -48,9 +50,9 @@ class Skill(Base):
 	id = Column(Integer, primary_key=True)
 	name = Column(String(100))
 	description = Column(String)
-	character = Column(Integer, ForeignKey("characters.id"))
+	character_id = Column(Integer, ForeignKey("characters.id"))
 
-	# extra_info = relationship('Character', back_populates="skills")
+	character = relationship('Character', back_populates="skills")
 
 
 class Trait(Base):
@@ -58,7 +60,9 @@ class Trait(Base):
 
 	id = Column(Integer, primary_key=True)
 	text = Column(String(50))
-	character = Column(Integer, ForeignKey("characters.id"))
+	character_id = Column(Integer, ForeignKey("characters.id"))
+
+	character = relationship('Character', back_populates="traits")
 
 
 class Weakness(Base):
@@ -66,7 +70,9 @@ class Weakness(Base):
 
 	id = Column(Integer, primary_key=True)
 	text = Column(String(50))
-	character = Column(Integer, ForeignKey("characters.id"))
+	character_id = Column(Integer, ForeignKey("characters.id"))
+
+	character = relationship('Character', back_populates="weaknesses")
 
 
 class BodyPart(Base):
@@ -76,7 +82,9 @@ class BodyPart(Base):
 	type = Column(String(50))
 	hp = Column(Integer)
 	max_hp = Column(Integer)
-	character = Column(Integer, ForeignKey("characters.id"))
+	character_id = Column(Integer, ForeignKey("characters.id"))
+
+	character = relationship('Character', back_populates="body_parts")
 
 
 class Item(Base):
@@ -87,26 +95,29 @@ class Item(Base):
 	amount = Column(Integer)
 	name = Column(String(100))
 	description = Column(String)
-	character = Column(Integer, ForeignKey("characters.id"))
+	character_id = Column(Integer, ForeignKey("characters.id"))
+
+	character = relationship('Character', back_populates="items")
 
 
 class Stats(Base):
 	__tablename__ = 'stats'
 
-	character = Column(Integer, ForeignKey("characters.id"), primary_key=True)
+	prudence = Column(Integer)
 	fortitude = Column(Integer)
 	temperance = Column(Integer)
 	justice = Column(Integer)
+	character_id = Column(Integer, ForeignKey("characters.id"), primary_key=True)
+
+	character = relationship('Character', back_populates="stats")
 
 
 class ExtraInfo(Base):
 	__tablename__ = 'extra_info'
 
-	character = Column(Integer, ForeignKey("characters.id"), primary_key=True)
 	job = Column(String(100))
 	ideology = Column(String(50))
 	biography = Column(String)
+	character_id = Column(Integer, ForeignKey("characters.id"), primary_key=True)
 
-
-
-
+	character = relationship('Character', back_populates="extra_info")
