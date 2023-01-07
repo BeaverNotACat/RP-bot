@@ -80,8 +80,8 @@ class BodyPart(Base):
 
 	id = Column(Integer, primary_key=True, autoincrement=True)
 	type = Column(String(50))
-	hp = Column(Integer)
-	max_hp = Column(Integer)
+	health_points = Column(Integer)
+	max_health_points = Column(Integer)
 	character_id = Column(Integer, ForeignKey("characters.id"))
 
 	character = relationship('Character', back_populates="body_parts")
