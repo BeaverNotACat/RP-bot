@@ -9,8 +9,8 @@ from classes.discordclient import DiscordClient
 class Treat(commands.Cog):
     def __init__(self, bot: DiscordClient) -> None:
         self.bot = bot
-        self.database = self.bot.get_database()
-        self.checkouts = self.bot.get_checkouts()
+        self.database = self.bot.database
+        self.checkouts = self.bot.checkouts
 
     @staticmethod
     def __gain_embed(part: list):

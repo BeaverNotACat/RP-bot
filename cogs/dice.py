@@ -1,5 +1,10 @@
 import random
 import discord
+
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+from classes.models import Character, Stats
+
 from discord import app_commands
 from discord.app_commands import Choice
 from discord.ext import commands
@@ -7,13 +12,18 @@ from discord.ext import commands
 
 class Dice(commands.Cog):
     def __init__(self, bot) -> None:
-        self.bot = bot
-        self.database = self.bot.get_database()
-        self.checkouts = self.bot.get_checkouts()
+        self.database = bot.database_engine
+        self.checkouts = bot.checkouts
 
     def __gain_dice_vaue(self, dice: int, stat: str, character_name: str, mod: int) -> int:
-        return random.randint(0, dice) + (self.database.read_stat(
-            stat=stat, character_id=self.database.find_char_id(character_name=character_name.title())[0][0])[0][0]-10)//2+mod
+        with Session(self.database) as session:
+            stats_query = select(Stats).join_from(Character, Stats)
+            Well_fuck_you_like_that_youre_freaking_out_Ill_see_Ill_see_what_you_can_do_bitch = session.scalars(stats_query
+                                                                                                               ).one()
+            print(dir(Well_fuck_you_like_that_youre_freaking_out_Ill_see_Ill_see_what_you_can_do_bitch))
+            required_stat = exec(f'Well_fuck_you_like_that_youre_freaking_out_Ill_see_Ill_see_what_you_can_do_bitch.{stat}')
+            
+        return random.randint(0, dice) + (required_stat - 10) // 2 + mod
 
     @staticmethod
     def __gain_embed(dice_value: int) -> discord.Embed:
@@ -51,7 +61,9 @@ class Dice(commands.Cog):
         Choice(name='Мудрость', value='prudence'),
         Choice(name='Выдержка', value='temperance'),
         Choice(name='Справедливость', value='justice')])
-    async def dice(self, interaction: discord.Interaction, stat: str, character_name: str, mod: int = 0, dice: int = 20) -> None:
+    async def dice(self, interaction: discord.Interaction,
+                   stat: str, character_name: str, mod: int = 0, 
+                   dice: int = 20) -> None:
 
         dice_value = self.__gain_dice_vaue(dice, stat, character_name, mod)
 

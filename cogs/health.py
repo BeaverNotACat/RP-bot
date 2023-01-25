@@ -8,10 +8,8 @@ from classes.discordclient import DiscordClient
 
 class Health(commands.Cog):
     def __init__(self, bot: DiscordClient) -> None:
-        self.bot = bot
-        self.database = self.bot.get_database()
-        self.checkouts = self.bot.get_checkouts()
-        self.images = self.bot.get_images()
+        self.database = bot.database
+        self.images = bot.images
 
     @staticmethod
     def __gain_embed() -> discord.Embed:
