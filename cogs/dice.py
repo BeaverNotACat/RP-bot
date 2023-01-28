@@ -1,14 +1,15 @@
 import random
 import discord
 
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.orm import Session
-from classes.models import Character, Stats
+from classes.models import Character
 
 from discord import app_commands
 from discord.app_commands import Choice
 from discord.ext import commands
 
+from utilties.decorators import check_is_character_owner
 
 class Dice(commands.Cog):
     def __init__(self, bot) -> None:
@@ -17,13 +18,23 @@ class Dice(commands.Cog):
 
     def __gain_dice_vaue(self, dice: int, stat: str, character_name: str, mod: int) -> int:
         with Session(self.database) as session:
-            stats_query = select(Stats).join_from(Character, Stats)
-            Well_fuck_you_like_that_youre_freaking_out_Ill_see_Ill_see_what_you_can_do_bitch = session.scalars(stats_query
-                                                                                                               ).one()
-            print(dir(Well_fuck_you_like_that_youre_freaking_out_Ill_see_Ill_see_what_you_can_do_bitch))
-            required_stat = exec(f'Well_fuck_you_like_that_youre_freaking_out_Ill_see_Ill_see_what_you_can_do_bitch.{stat}')
-            
-        return random.randint(0, dice) + (required_stat - 10) // 2 + mod
+            character_id_query = select(Character.id).where(Character.name == character_name)
+            charater_id = session.execute(character_id_query).first()[0]
+
+            specified_stat_query = text(
+                    'SELECT stats.%s FROM stats WHERE character_id = %i' % (stat, charater_id))
+            specified_stat = session.execute(specified_stat_query).first()[0] 
+
+        return random.randint(0, dice) + (specified_stat - 10) // 2 + mod
+
+    @check_is_character_owner
+    async def dice_command(self, interaction: discord.Interaction,
+                   stat: str, character_name: str, mod: int, 
+                   dice: int) -> None:
+        dice_value = self.__gain_dice_vaue(dice, stat, character_name, mod)
+
+        await interaction.response.send_message(embed=self.__gain_embed(dice_value=dice_value))
+
 
     @staticmethod
     def __gain_embed(dice_value: int) -> discord.Embed:
@@ -47,7 +58,7 @@ class Dice(commands.Cog):
         embed.add_field(name=emmed_name, value=f'Ваш результат: {dice_value}')
 
         return embed
-
+    
     @app_commands.command(
         name='dice',
         description='Бросок кубика персонажа, для получения результата действия')
@@ -64,10 +75,7 @@ class Dice(commands.Cog):
     async def dice(self, interaction: discord.Interaction,
                    stat: str, character_name: str, mod: int = 0, 
                    dice: int = 20) -> None:
-
-        dice_value = self.__gain_dice_vaue(dice, stat, character_name, mod)
-
-        await interaction.response.send_message(embed=self.__gain_embed(dice_value=dice_value))
+        await self.dice_command(interaction=interaction, stat=stat, character_name=character_name, mod=mod, dice=dice)
 
 
 async def setup(bot):
