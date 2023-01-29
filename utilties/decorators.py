@@ -46,3 +46,20 @@ def check_is_admin(method):
         return method(self, *args, **kwargs)
     return  decorate
 
+
+def check_is_character_name_exists(method):
+    '''Cog's method decorator for accesing only admin'''
+
+    def decorate(self, *args, **kwargs):
+        database: Engine = self.database
+        character_name: str = kwargs['character_name']
+        
+        with Session(self.database) as session:
+            character_query = select(Character).where(Character.name == character_name)
+            character = session.execute(character_query).first()
+            
+            if not character:
+                raise PermissionError('Персонажа с таким именем не существует')
+        
+        return method(self, *args, **kwargs)
+    return  decorate
