@@ -1,21 +1,21 @@
 from discord.ext import commands
 from typing import Any
 
-from classes.database import DatabaseInterface
-from classes.checkouts import Checkouts
 from classes.images import Images
+
+from sqlalchemy.engine import Engine
 
 
 class DiscordClient(commands.Bot):
-    """Подкласс дискорд бота, для типизировання python. (МЕТОДЫ РАБОТАЮТ ЧЕРЕЗ ПЕГРУЗКУ В main.py!!!)"""
-
-    def get_database() -> DatabaseInterface:
+    """Discord bot properties model
+    For real bot class  open main.py"""
+    
+    @property
+    def database() -> Engine:
         pass
-
-    def get_checkouts() -> Checkouts:
-        pass
-
-    def get_images() -> Images:
+    
+    @property
+    def images() -> Images:
         pass
 
     def __init__(self, **kwargs: Any) -> None:
