@@ -7,7 +7,7 @@ from discord.interactions import Interaction
 from classes.models import Character, User
 
 
-def check_is_character_owner(method):
+def check_is_character_owner_or_admin(method):
     '''Cog's method decorator for accesing only character owners'''
 
     def decorate(self, *args, **kwargs):
@@ -18,9 +18,12 @@ def check_is_character_owner(method):
         with Session(self.database) as session:
             owner_id_query = select(Character.user_id).where(Character.name == character_name)
             owner_id = session.execute(owner_id_query).first()[0]
+
+            user_type_query = select(User.type).where(User.id == interaction.user.id)
+            user_type = session.execute(user_type_query).first()[0]
             
-            if not owner_id == interaction.user.id:
-                raise PermissionError('Доступ запрещен: это не ваш персонаж')
+        if not owner_id == interaction.user.id or user_type != 'admin':
+            raise PermissionError('Доступ запрещен: это не ваш персонаж')
         
         return method(self, *args, **kwargs)
     return  decorate
