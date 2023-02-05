@@ -36,20 +36,20 @@ class Images:
         else:
             return self.low_mental_health
 
-    def health_condition_image(self, head_hp, body_hp, r_leg_hp, l_leg_hp, r_arm_hp, l_arm_hp, sp):
+    def health_condition_image(self, head, body, right_leg, left_leg, right_arm, left_arm, sanity):
 
-        for part_hp in [[head_hp[0], head_hp[1], (132, 11), (136, 13)],
-                        [body_hp[0], body_hp[1], (203, 108), (207, 110)],
-                        [l_arm_hp[0], l_arm_hp[1], (234, 197), (238, 199)],
-                        [r_arm_hp[0], r_arm_hp[1], (36, 199), (40, 201)],
-                        [l_leg_hp[0], l_leg_hp[1], (223, 266), (227, 268)],
-                        [r_leg_hp[0], r_leg_hp[1], (48, 264), (52, 266)]]:
+        for part_hp in [[head[0], head[1], (132, 11), (136, 13)],
+                        [body[0], body[1], (203, 108), (207, 110)],
+                        [left_arm[0], left_arm[1], (234, 197), (238, 199)],
+                        [right_arm[0], right_arm[1], (36, 199), (40, 201)],
+                        [left_leg[0], left_leg[1], (223, 266), (227, 268)],
+                        [right_leg[0], right_leg[1], (48, 264), (52, 266)]]:
 
             self.body.paste(self.__check_health(part_hp[0] / part_hp[1]), part_hp[2], self.__check_health(part_hp[0] / part_hp[1]))
             self.text.text(part_hp[3], str(part_hp[0]), font=self.font, fill=(
                 '#FFFFFF'), stroke_width=2, stroke_fill=('#000000'))
 
-        part_sp = [sp[0], sp[1], (42, 69), (46, 71)]
+        part_sp = [sanity[0], sanity[1], (42, 69), (46, 71)]
 
         self.body.paste(self.__check_mental_health(part_hp[0] / part_hp[1]), part_sp[2], self.__check_mental_health(part_hp[0] / part_hp[1]))
 
