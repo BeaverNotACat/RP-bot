@@ -57,9 +57,11 @@ def check_is_character_name_exists(method):
         with Session(self.database) as session:
             character_query = select(Character).where(Character.name == character_name)
             character = session.execute(character_query).first()
+
+            print(character)
             
-            if not character:
-                raise PermissionError('Персонажа с таким именем не существует')
-        
+            if character is None:
+                raise ValueError('Персонажа с таким именем не существует')
+        print(args, kwargs)
         return method(self, *args, **kwargs)
     return  decorate

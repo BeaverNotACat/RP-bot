@@ -8,14 +8,15 @@ class Map(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
 
+
     @staticmethod
     def __gain_embed() -> discord.Embed:
 
         embed = discord.Embed(color=0xFFFFFF, title='Вывод карты местности:')
         file = discord.File("images/map.png", filename="map.png")
         embed.set_image(url="attachment://map.png")
-
         return embed, file
+
 
     @app_commands.command(name='map', description='Вывод карты района')
     async def map(self, interaction: discord.Interaction) -> None:

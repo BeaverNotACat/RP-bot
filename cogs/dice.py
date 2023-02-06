@@ -9,12 +9,14 @@ from discord import app_commands
 from discord.app_commands import Choice
 from discord.ext import commands
 
-from utilties.decorators import check_is_character_owner
+from utilties.decorators import check_is_character_owner_or_admin, \
+                                check_is_character_name_exists
+
 
 class Dice(commands.Cog):
     def __init__(self, bot) -> None:
-        self.database = bot.database_engine
-        self.checkouts = bot.checkouts
+        self.database = bot.database
+
 
     def __gain_dice_vaue(self, dice: int, stat: str, character_name: str, mod: int) -> int:
         with Session(self.database) as session:
@@ -27,7 +29,9 @@ class Dice(commands.Cog):
 
         return random.randint(0, dice) + (specified_stat - 10) // 2 + mod
 
-    @check_is_character_owner
+
+    @check_is_character_name_exists
+    @check_is_character_owner_or_admin
     async def dice_command(self, interaction: discord.Interaction,
                    stat: str, character_name: str, mod: int, 
                    dice: int) -> None:
@@ -56,9 +60,9 @@ class Dice(commands.Cog):
 
         embed = discord.Embed(color=emmed_color, title='Бросок кубика:')
         embed.add_field(name=emmed_name, value=f'Ваш результат: {dice_value}')
-
         return embed
     
+
     @app_commands.command(
         name='dice',
         description='Бросок кубика персонажа, для получения результата действия')
