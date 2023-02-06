@@ -2,13 +2,12 @@ import discord
 import os
 
 from sqlalchemy import create_engine
-from sqlalchemy import engine
+from sqlalchemy.engine import Engine
 
 from classes.discordclient import DiscordClient
 from classes.database import DatabaseInterface
 from classes.checkouts import Checkouts
 from classes.images import Images
-
 
 class Client(DiscordClient):
     def __init__(self) -> None:
@@ -34,19 +33,11 @@ class Client(DiscordClient):
                 await self.load_extension("cogs." + f[:-3])
 
     @property
-    def database(self) -> DatabaseInterface:
-        return self.__database
-
-    @property
-    def checkouts(self) -> Checkouts:
-        return self.__checkouts
-
-    @property
     def images(self) -> Images:
         return self.__images
 
     @property
-    def database_engine(self) -> engine:
+    def database(self) -> Engine:
         '''SQLAlchemy database engine'''
         return self.__database_engine
 

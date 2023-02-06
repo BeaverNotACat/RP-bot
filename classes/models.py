@@ -9,7 +9,9 @@ class User(Base):
 	__tablename__ = 'users'
 
 	TYPES = [('user', 'User'),
-	         ('admin', 'Admin')]
+             ('User', 'User'),
+             ('admin', 'Admin'),
+	         ('Admin', 'Admin')]
 
 	id = Column(Integer, primary_key=True)
 	type = Column(ChoiceType(TYPES))
@@ -23,8 +25,10 @@ class User(Base):
 class Character(Base):
 	__tablename__ = 'characters'
 
-	TYPES = [('human', 'Human'),
-	         ('distortion', 'Distortion')]
+	TYPES = [('человек', 'Человек'),
+             ('Человек', 'Человек'),
+	         ('искжаение', 'Искажение'),
+             ('Искажение', 'Искажение')]
 
 	id = Column(Integer, primary_key=True, autoincrement=True)
 	name = Column(String(100))
