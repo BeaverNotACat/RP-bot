@@ -4,20 +4,20 @@ from PIL import Image, ImageFont, ImageDraw
 class Images:
 
     def __init__(self):
-        self.body = Image.open('images/bg.png').convert("RGBA")
+        self.body = Image.open('assets/images/bg.png').convert("RGBA")
         self.high_physical_health = Image.open(
-            'images/HP_high.png').convert("RGBA")
+            'assets/images/HP_high.png').convert("RGBA")
         self.middle_physical_health = Image.open(
-            'images/HP_mid.png').convert("RGBA")
+            'assets/images/HP_mid.png').convert("RGBA")
         self.low_physical_health = Image.open(
-            'images/HP_low.png').convert("RGBA")
+            'assets/images/HP_low.png').convert("RGBA")
         self.high_mental_health = Image.open(
-            'images/SP_high.png').convert("RGBA")
+            'assets/images/SP_high.png').convert("RGBA")
         self.middle_mental_health = Image.open(
-            'images/SP_mid.png').convert("RGBA")
+            'assets/images/SP_mid.png').convert("RGBA")
         self.low_mental_health = Image.open(
-            'images/SP_low.png').convert("RGBA")
-        self.font = ImageFont.truetype('norwester.otf', size=14)
+            'assets/images/SP_low.png').convert("RGBA")
+        self.font = ImageFont.truetype('assets/fonts/norwester.otf', size=14)
         self.text = ImageDraw.Draw(self.body)
 
     def __check_health(self, division):
@@ -56,5 +56,5 @@ class Images:
         self.text.text(part_sp[3], str(part_sp[0]), font=self.font, fill=(
             '#FFFFFF'), stroke_width=2, stroke_fill=('#000000'))
 
-        self.body.save("images/temp/hp_temp.png")
+        self.body.save("assets/images/temp/hp_temp.png")
         return
