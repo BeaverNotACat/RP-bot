@@ -1,4 +1,3 @@
-import asyncio
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -21,7 +20,7 @@ class Health(commands.Cog):
     def __gain_embed() -> tuple[discord.Embed, discord.File]:
         embed = discord.Embed(
             color=0xFFFFFF, title='Анализ состояния здоровья:')
-        file = discord.File("images/temp/hp_temp.png", filename="hp_temp.png")
+        file = discord.File("assets/hp_temp.png", filename="hp_temp.png")
         embed.set_image(url="attachment://hp_temp.png")
         return embed, file
 
