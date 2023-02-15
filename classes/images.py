@@ -56,5 +56,5 @@ class Images:
         self.text.text(part_sp[3], str(part_sp[0]), font=self.font, fill=(
             '#FFFFFF'), stroke_width=2, stroke_fill=('#000000'))
 
-        self.body.save("assets/images/temp/hp_temp.png")
+        self.body.save("assets/hp_temp.png")
         return
