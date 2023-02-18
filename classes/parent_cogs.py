@@ -1,5 +1,5 @@
 import discord
-from discord import app_commands
+from discord import Embed, app_commands
 from discord.app_commands import Choice
 from discord.ext import commands
 from classes.discordclient import DiscordClient
@@ -18,15 +18,6 @@ class Change_health(commands.Cog):
 
 
     @staticmethod
-    def __gain_hp_change_embed(hp_changes: list[dict]):
-        embed = discord.Embed(color= 0xFFFFFF, title='Изменение здоровья:')
-        for hp_change in hp_changes:
-            embed.add_field(name=hp_change['name'],
-                            value=f"{hp_change['old_hp']} ➟ {hp_change['new_hp']}")
-        return embed
-
-
-    @staticmethod
     def check_is_heal_positive(method):
         def decorate(self, *args, **kwargs):
                 if kwargs['heal_amount'] < 0:
@@ -41,8 +32,30 @@ class Change_health(commands.Cog):
                     raise ValueError('Запрещено изменять здоровье на отрицательные значения')
                 return method(self, *args, **kwargs)
         return  decorate
+
+    @staticmethod
+    def translate_body_parts_name(name: str) -> str:
+        dictionary = {
+                'head': 'Голова',
+                'body': 'Туловище',
+                'left_arm': 'Левая рука',
+                'right_arm': 'Правая рука',
+                'left_leg': 'Левая нога',
+                'right_leg': 'Правая нога',
+                'sanity': 'Рассудок'
+                }
+        return dictionary[name]
+
+
+    def __gain_hp_change_embed(self, hp_changes: list[dict]) -> discord.Embed:
+        embed = discord.Embed(color= 0xFFFFFF, title='Изменение здоровья:')
+        for hp_change in hp_changes:
+            embed.add_field(
+                    name=self.translate_body_parts_name(hp_change['name']),
+                    value=f"{hp_change['old_hp']} ➟ {hp_change['new_hp']}")
+        return embed   
     
-    
+
     def make_body_parts_query(self, character_name: str, part: str):
         with Session(self.database) as session:
                 character_id_query = select(Character.id).where(
