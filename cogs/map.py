@@ -13,7 +13,7 @@ class Map(commands.Cog):
     def __gain_embed() -> discord.Embed:
 
         embed = discord.Embed(color=0xFFFFFF, title='Вывод карты местности:')
-        file = discord.File("images/map.png", filename="map.png")
+        file = discord.File("assets/images/map.png", filename="map.png")
         embed.set_image(url="attachment://map.png")
         return embed, file
 

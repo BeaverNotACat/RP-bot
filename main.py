@@ -5,16 +5,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 
 from classes.discordclient import DiscordClient
-from classes.database import DatabaseInterface
-from classes.checkouts import Checkouts
 from classes.images import Images
 
 class Client(DiscordClient):
     def __init__(self) -> None:
-        self.__database = DatabaseInterface('roleplay.db')
-        self.__checkouts = Checkouts()
         self.__images = Images()
-        self.__database_engine = create_engine("sqlite:///roleplay.db", echo=True, future=True)
+        self.__database_engine = create_engine(
+                "sqlite:///roleplay.db", echo=True, future=True)
 
         self.__synced = False
         super().__init__(

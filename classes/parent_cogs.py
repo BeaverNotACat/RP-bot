@@ -1,6 +1,4 @@
 import discord
-from discord import Embed, app_commands
-from discord.app_commands import Choice
 from discord.ext import commands
 from classes.discordclient import DiscordClient
 

@@ -4,7 +4,7 @@ from sqlalchemy.engine import Engine
 
 from discord.interactions import Interaction 
 
-from classes.models import Character, User
+from classes.models import Character, User, Item
 
 
 def check_is_character_owner_or_admin(method):
@@ -48,7 +48,7 @@ def check_is_admin(method):
 
 
 def check_is_character_name_exists(method):
-    '''Cog's method decorator for accesing only admin'''
+    '''Cog's method decorator for cheking character existing'''
 
     def decorate(self, *args, **kwargs):
         database: Engine = self.database
@@ -62,4 +62,29 @@ def check_is_character_name_exists(method):
                 raise ValueError('Персонажа с таким именем не существует')
         return method(self, *args, **kwargs)
     return  decorate
+
+
+def check_is_item_exists(item_type: str, item_name: str):
+    '''Cog's method decorator for cheking item existense in inventory'''
+    def _check_is_item_exists(method):
+        def decorate(self, *args, **kwargs):
+            database: Engine = self.database
+            character_name: str = kwargs['character_name']
+        
+            with Session(self.database) as session:
+                character_id_query = select(Character.id).where(
+                        Character.name == character_name)
+                character_id = session.execute(character_id_query).first()[0]
+
+                item_query = select(Item).where(
+                            (Item.character_id == character_id) & \
+                            (Item.type == item_type) & \
+                            (Item.name == item_name))
+                item = session.execute(item_query).first()
+
+                if item is None:
+                    raise ValueError(f'{item_name.title()} предмет отстутствует у персонажа')
+            return method(self, *args, **kwargs)
+        return  decorate
+    return _check_is_item_exists
 
